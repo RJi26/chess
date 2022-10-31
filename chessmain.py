@@ -1,7 +1,7 @@
 import pygame as p
 from ChessEngine import GameState
 import ChessEngine
-
+#Dimensions
 WIDTH = HEIGHT = 512
 DIMENSION = 8 #8x8 chess board
 SQ_SIZE = HEIGHT // DIMENSION #Square size is equal to the height divided by dimension
