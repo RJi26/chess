@@ -30,7 +30,7 @@ def main():
     running = True
     sqselected = () #No square is selected initially
     playerclicks = [] #keeps track of the clicks
-    validMoves = GameState.getValidMoves
+    validMoves = gs.getValidMoves()
     moveMade = False
 
     while running:
@@ -50,10 +50,12 @@ def main():
                 if len(playerclicks) == 2:
                     move = ChessEngine.Move(playerclicks[0], playerclicks[1], gs.board)
                     print(move.getChessNotation())
-                    gs.makeMove(move)
-                    if move in validMoves:
-                        GameState.makeMove(move)
-                        moveMade = True
+                    for moves in validMoves:
+                        if move.moveID == moves.moveID:
+                            gs.makeMove(move)
+                            moveMade = True
+                    else:
+                        pass
                     sqselected = () #Reset user clicks
                     playerclicks = []
             elif e.type == p.KEYDOWN:
@@ -61,7 +63,7 @@ def main():
                     gs.undoMove()
                     moveMade = True
         if moveMade:
-            validMoves = GameState.getValidMoves()
+            validMoves = gs.getValidMoves()
             moveMade = False
 
         drawGameState(screen,gs)
@@ -77,7 +79,7 @@ def drawGameState(screen, gs):
     drawPieces(screen, gs.board) #draws pieces on the top of the squares
 
 def drawBoard(screen): #Draws squares on the board
-    colors = [p.Color("white"), p.Color("orange")]
+    colors = [p.Color("white"), p.Color("dark green")]
     for i in range(DIMENSION):
         for j in range(DIMENSION):
             color = colors[((i+j) % 2)]
