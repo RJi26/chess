@@ -1,6 +1,7 @@
 import pygame as p
 from ChessEngine import GameState
 import ChessEngine
+import random
 #Dimensions
 WIDTH = HEIGHT = 512
 DIMENSION = 8 #8x8 chess board
@@ -34,14 +35,18 @@ def main():
     moveMade = False
 
     while running:
+        
         for e in p.event.get():
             if e.type == p.QUIT:
                 running = False
             elif e.type == p.MOUSEBUTTONDOWN:
+                
                 location = p.mouse.get_pos() #Gets the (x,y) position of the mouse
                 col = location[0]//SQ_SIZE
                 row = location[1]//SQ_SIZE
-                if sqselected == (row, col): #If the user clicked on the square twice (Usually means deselect)
+                if sqselected == (row, col):
+                    enginemove = random.choice(gs.getValidMoves())
+                    print("Engine best move!:" + str(enginemove.moveID)) #If the user clicked on the square twice (Usually means deselect)
                     sqselected = () #Deselect the piece
                     playerclicks = []
                 else:
@@ -50,12 +55,14 @@ def main():
                 if len(playerclicks) == 2:
                     move = ChessEngine.Move(playerclicks[0], playerclicks[1], gs.board)
                     print(move.getChessNotation())
+                    
                     for moves in validMoves:
                         if move.moveID == moves.moveID:
                             gs.makeMove(move)
                             moveMade = True
                     else:
                         pass
+                    
                     sqselected = () #Reset user clicks
                     playerclicks = []
             elif e.type == p.KEYDOWN:
@@ -65,6 +72,7 @@ def main():
         if moveMade:
             validMoves = gs.getValidMoves()
             moveMade = False
+            
 
         drawGameState(screen,gs)
         clock.tick(MAX_FPS)
