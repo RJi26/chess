@@ -1,3 +1,4 @@
+#Micobit only (Use mu editor or another IDE which supports Micropython)
 from microbit import *
 import radio
 
